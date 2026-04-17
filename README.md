@@ -9,6 +9,11 @@ with an OpenWrt package recipe added under [`openwrt/`](openwrt/).
   modems (Quectel official bulletin). This fork pins to nippynetworks `1.4.17`
   (commit `fbbb4fe` = tag `1.4.17` + two trivial `CMakeLists.txt` fixes).
   That release includes proper RM520N-GL support.
+  Refs:
+  - [nippynetworks/qfirehose](https://github.com/nippynetworks/qfirehose) (upstream safe fork)
+  - [tag 1.4.17 source](https://github.com/nippynetworks/qfirehose/releases/tag/1.4.17)
+  - [Quectel forum: how to upgrade modules via qfirehose](https://forums.quectel.com/t/how-to-upgrade-module-thru-linux-qfirehose/15556)
+  - [OpenWrt wiki: ModemManager](https://openwrt.org/docs/guide-user/network/wan/wwan/modemmanager)
 - **Reproducible OpenWrt build.** `PKG_SOURCE_VERSION` locks to an exact commit SHA.
 - **No patches to C sources.** Only an OpenWrt Makefile is added; the firmware
   flasher logic is byte-for-byte the upstream code.

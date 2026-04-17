@@ -5,6 +5,12 @@
 # Known-bad upstream version: Quectel 1.4.11 (brick risk).
 # Safe: nippynetworks main @ fbbb4fe (= tag 1.4.17 + CMakeLists fixes).
 #
+# Refs:
+#   https://github.com/nippynetworks/qfirehose (upstream fork)
+#   https://github.com/nippynetworks/qfirehose/releases/tag/1.4.17
+#   https://forums.quectel.com/t/how-to-upgrade-module-thru-linux-qfirehose/15556
+#   https://github.com/vjt/qfirehose (this fork)
+#
 
 include $(TOPDIR)/rules.mk
 

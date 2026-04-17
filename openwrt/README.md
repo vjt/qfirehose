@@ -7,7 +7,8 @@ Pinned commit: `fbbb4fe` (nippynetworks 1.4.17 + CMakeLists fixes).
 ## Why a fork
 
 - **Version safety**: Quectel upstream v1.4.11 is known to brick modems
-  (Quectel official bulletin). This fork pins to 1.4.17 via nippynetworks.
+  (Quectel official bulletin). This fork pins to [1.4.17 via nippynetworks](https://github.com/nippynetworks/qfirehose/releases/tag/1.4.17).
+  See also: [Quectel forum thread on qfirehose upgrades](https://forums.quectel.com/t/how-to-upgrade-module-thru-linux-qfirehose/15556).
 - **Reproducible builds**: PKG_SOURCE_VERSION locks to an exact commit SHA.
 - **Feed-friendly**: recipe can be dropped into any OpenWrt package feed
   or `package/utils/qfirehose/`.
