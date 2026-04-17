@@ -18,7 +18,7 @@ with an OpenWrt package recipe added under [`openwrt/`](openwrt/).
 ```sh
 # From your OpenWrt buildroot
 mkdir -p package/utils/qfirehose
-curl -L https://raw.githubusercontent.com/vjt/qfirehose/main/openwrt/Makefile \
+curl -L https://raw.githubusercontent.com/vjt/qfirehose/master/openwrt/Makefile \
     -o package/utils/qfirehose/Makefile
 
 echo "CONFIG_PACKAGE_qfirehose=y" >> .config
