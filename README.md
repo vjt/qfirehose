@@ -1,3 +1,62 @@
+# qfirehose (vjt fork)
+
+Fork of [nippynetworks/qfirehose](https://github.com/nippynetworks/qfirehose)
+with an OpenWrt package recipe added under [`openwrt/`](openwrt/).
+
+## Why this fork
+
+- **Brick-safe version pin.** Upstream Quectel `v1.4.11` is known to brick
+  modems (Quectel official bulletin). This fork pins to nippynetworks `1.4.17`
+  (commit `fbbb4fe` = tag `1.4.17` + two trivial `CMakeLists.txt` fixes).
+  That release includes proper RM520N-GL support.
+- **Reproducible OpenWrt build.** `PKG_SOURCE_VERSION` locks to an exact commit SHA.
+- **No patches to C sources.** Only an OpenWrt Makefile is added; the firmware
+  flasher logic is byte-for-byte the upstream code.
+
+## Quick build (OpenWrt)
+
+```sh
+# From your OpenWrt buildroot
+mkdir -p package/utils/qfirehose
+curl -L https://raw.githubusercontent.com/vjt/qfirehose/openwrt-package/openwrt/Makefile \
+    -o package/utils/qfirehose/Makefile
+
+echo "CONFIG_PACKAGE_qfirehose=y" >> .config
+make defconfig
+make package/qfirehose/compile V=s
+```
+
+Artifact lands in `bin/packages/<arch>/base/qfirehose-1.4.17-r1.apk` (or `.ipk`).
+
+## Runtime usage
+
+```sh
+# Unzip the official Quectel firmware package first, then point at the dir
+# containing update/firehose/
+qfirehose -f /tmp/RM520NGLAAR03A03M4G/
+```
+
+After flash completes, reboot the modem:
+```sh
+echo -e "AT+CFUN=1,1\r" > /dev/wwan0at0
+```
+
+Verify with `AT+QGMR`.
+
+## Warnings
+
+- **Never** flash on battery or unstable power. Power loss during Firehose
+  write = permanently bricked modem.
+- **Never** use Quectel upstream `v1.4.11` to flash. Use this fork (or
+  nippynetworks 1.4.14+).
+- Verify firmware checksum (`md5.txt` in the firmware dir) before flashing.
+- After a successful flash, run `AT&F` from the modem AT console to reset
+  settings to factory defaults.
+
+---
+
+# Upstream README (original Chinese)
+
 # QFIREHOSE 升级进度通知机制说明
 
 > ​    QFirehose 目前支持两种进度通知方式。基于文件的通知方式，基于消息队列的通知机制。两种方式均可使用。Android设备由于系统限制，system V IPC 机制支持不完善，不能支持消息队列的方式获取进度。
