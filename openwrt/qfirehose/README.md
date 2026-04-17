@@ -12,20 +12,37 @@ Pinned commit: `fbbb4fe` (nippynetworks 1.4.17 + CMakeLists fixes).
   (Quectel official bulletin). This fork pins to [1.4.17 via nippynetworks](https://github.com/nippynetworks/qfirehose/releases/tag/1.4.17).
   See also: [Quectel forum thread on qfirehose upgrades](https://forums.quectel.com/t/how-to-upgrade-module-thru-linux-qfirehose/15556).
 - **Reproducible builds**: PKG_SOURCE_VERSION locks to an exact commit SHA.
-- **Feed-friendly**: recipe can be dropped into any OpenWrt package feed
-  or `package/utils/qfirehose/`.
+- **Feed-friendly layout**: `openwrt/qfirehose/` is a drop-in package
+  directory — wire it into your buildroot as a local feed, no file
+  copying required.
 
 ## Usage in an OpenWrt build
 
+Clone this repo somewhere persistent on the build host, then register
+it as a local feed in `<openwrt>/feeds.conf`:
+
+```
+src-link custom /path/to/feeds-local
+```
+
+Symlink the package dir into `feeds-local/`:
+
 ```sh
-mkdir -p <openwrt>/package/utils/qfirehose
-cp openwrt/Makefile <openwrt>/package/utils/qfirehose/Makefile
+ln -s /path/to/qfirehose/openwrt/qfirehose <openwrt>/feeds-local/qfirehose
+```
+
+Then update + install + build:
+
+```sh
 cd <openwrt>
-make menuconfig   # Utilities -> qfirehose
+./scripts/feeds update custom
+./scripts/feeds install -a -p custom
+make menuconfig       # Utilities -> qfirehose
 make package/qfirehose/compile V=s
 ```
 
-Resulting `.ipk` lands in `bin/packages/<arch>/base/`.
+Resulting `.apk` (OpenWrt ≥ 24.10) or `.ipk` lands in
+`bin/packages/<arch>/custom/`.
 
 ## Runtime usage
 
