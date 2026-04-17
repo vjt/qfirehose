@@ -3,6 +3,11 @@
 Fork of [nippynetworks/qfirehose](https://github.com/nippynetworks/qfirehose)
 with an OpenWrt package recipe added under [`openwrt/`](openwrt/).
 
+> **Tested only on Quectel RM520N-GL** (GL-X3000 router).
+> Other Quectel modems (EM05, EM12, RM500Q, RG500L, etc.) are *likely*
+> supported by the same 1.4.17 binary but have **not been verified by this fork**.
+> Flash at your own risk.
+
 ## Why this fork
 
 - **Brick-safe version pin.** Upstream Quectel `v1.4.11` is known to brick

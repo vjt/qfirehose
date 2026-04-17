@@ -4,6 +4,8 @@ Package recipe for building `qfirehose` as an OpenWrt package.
 
 Pinned commit: `fbbb4fe` (nippynetworks 1.4.17 + CMakeLists fixes).
 
+**Tested only on Quectel RM520N-GL.** Other Quectel modems unverified.
+
 ## Why a fork
 
 - **Version safety**: Quectel upstream v1.4.11 is known to brick modems

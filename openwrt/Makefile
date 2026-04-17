@@ -46,6 +46,9 @@ define Package/qfirehose/description
   Do NOT use Quectel upstream v1.4.11 — known to brick. This package
   pins to nippynetworks 1.4.17 which is safe for RM520N-GL.
 
+  Tested only on RM520N-GL. Other Quectel modules may work but are
+  unverified by this package's maintainer.
+
   Usage: qfirehose -f /path/to/firmware_dir
 endef
 
