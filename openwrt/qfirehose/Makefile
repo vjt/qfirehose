@@ -18,18 +18,43 @@ PKG_NAME:=qfirehose
 PKG_VERSION:=1.4.17
 PKG_RELEASE:=1
 
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/vjt/qfirehose.git
-PKG_SOURCE_VERSION:=fbbb4feeea19c265a1ed01d5eedf72e33974bac5
-PKG_SOURCE_DATE:=2024-12-09
-PKG_MIRROR_HASH:=skip
+# The pinned upstream commit — the whole point of this fork. Keep this in
+# sync with the safety notes above; it is the only thing that decides which
+# sources get compiled.
+QFIREHOSE_COMMIT:=fbbb4feeea19c265a1ed01d5eedf72e33974bac5
 
 PKG_LICENSE:=Proprietary
 PKG_LICENSE_FILES:=NOTICE
 
 PKG_BUILD_PARALLEL:=1
 
+# Extract the pinned sources from this repo's own git history instead of
+# cloning them from github at build time.
+#
+# Two reasons. GitHub refuses anonymous git-over-https from datacenter IPs
+# (it answers 401), so SDK builds on rented build hosts died in the
+# download phase while codeload and the REST API kept working from the very
+# same address. And the checkout is already on the build host — the package
+# dir is symlinked into <sdk>/package/, so the repo root is two levels up,
+# .git included — which makes the download pure waste even when it works.
+#
+# Deliberately NOT the working tree: QFIREHOSE_COMMIT is what keeps this
+# package on the known-safe sources, whatever else lands on the branch.
+# `git archive` fails loudly if that commit is missing (shallow clone),
+# which is the right outcome — building something else would be worse.
+#
+# -o resolves relative to the -C directory, hence the absolute paths.
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
 include $(INCLUDE_DIR)/package.mk
+
+define Build/Prepare
+	mkdir -p $(PKG_BUILD_DIR)
+	git -C $(CURDIR)/../.. archive --format=tar $(QFIREHOSE_COMMIT) \
+		-o $(PKG_BUILD_DIR)/.pinned-src.tar
+	tar -xf $(PKG_BUILD_DIR)/.pinned-src.tar -C $(PKG_BUILD_DIR)
+	rm -f $(PKG_BUILD_DIR)/.pinned-src.tar
+endef
 
 define Package/qfirehose
   SECTION:=utils
